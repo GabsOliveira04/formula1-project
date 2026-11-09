@@ -1,16 +1,10 @@
 CREATE DATABASE IF NOT EXISTS formula1;
-
-
 USE formula1;
 
-
 CREATE TABLE paises (
-
   cod_pais INT PRIMARY KEY AUTO_INCREMENT,
   nome_pais VARCHAR(50) NOT NULL
 );
-
-
 
 CREATE TABLE equipes (
   id_equipe INT PRIMARY KEY AUTO_INCREMENT,
@@ -18,8 +12,6 @@ CREATE TABLE equipes (
   cod_pais INT,
   FOREIGN KEY (cod_pais) REFERENCES paises(cod_pais)
 );
-
-
 
 CREATE TABLE pilotos (
   id_piloto INT PRIMARY KEY AUTO_INCREMENT,
@@ -30,8 +22,6 @@ CREATE TABLE pilotos (
   FOREIGN KEY (id_equipe) REFERENCES equipes(id_equipe)
 );
 
-
-
 CREATE TABLE corridas (
   id_gp INT PRIMARY KEY AUTO_INCREMENT,
   nome_gp VARCHAR(100) NOT NULL,
@@ -40,8 +30,7 @@ CREATE TABLE corridas (
   FOREIGN KEY (cod_pais) REFERENCES paises(cod_pais)
 );
 
-
-
+-- Inserção de Dados
 INSERT INTO paises (nome_pais) VALUES
 ('Brasil'),
 ('Itália'),
@@ -53,7 +42,6 @@ INSERT INTO paises (nome_pais) VALUES
 ('Holanda'),
 ('Suíça'),
 ('Áustria');
-
 
 INSERT INTO equipes (nome_equipe, cod_pais) VALUES
 ('Ferrari', 2),
@@ -67,7 +55,6 @@ INSERT INTO equipes (nome_equipe, cod_pais) VALUES
 ('Sauber', 9),
 ('RB', 2);
 
-
 INSERT INTO pilotos (nome_piloto, cod_pais, id_equipe) VALUES
 ('Ayrton Senna', 1, 5),
 ('Emerson Fittipaldi', 1, 2),
@@ -79,8 +66,6 @@ INSERT INTO pilotos (nome_piloto, cod_pais, id_equipe) VALUES
 ('Riccardo Patrese', 2, 5),
 ('Alain Prost', 3, 3),
 ('Pierre Gasly', 3, 6);
-
-
 
 INSERT INTO corridas (nome_gp, cod_pais, quantidade_voltas) VALUES
 ('Grande Prêmio do Brasil', 1, 71),
@@ -94,8 +79,8 @@ INSERT INTO corridas (nome_gp, cod_pais, quantidade_voltas) VALUES
 ('Grande Prêmio da Suíça', 9, 60),
 ('Grande Prêmio da Áustria', 10, 71);
 
+-- Atualização: Adicionar coluna e preencher salários
 ALTER TABLE pilotos ADD COLUMN salario DECIMAL(10,2);
-
 
 UPDATE pilotos SET salario = 95000.00 WHERE id_piloto = 1;
 UPDATE pilotos SET salario = 85000.00 WHERE id_piloto = 2;
@@ -108,40 +93,32 @@ UPDATE pilotos SET salario = 55000.00 WHERE id_piloto = 8;
 UPDATE pilotos SET salario = 98000.00 WHERE id_piloto = 9;
 UPDATE pilotos SET salario = 48000.00 WHERE id_piloto = 10;
 
-
+-- Consultas
 SELECT nome_pais FROM paises
 WHERE nome_pais LIKE 'B%L';
-
 
 SELECT p.nome_piloto, pa.nome_pais
 FROM pilotos p
 JOIN paises pa ON p.cod_pais = pa.cod_pais
 WHERE pa.nome_pais IN ('Brasil', 'Itália', 'França');
 
-
 SELECT nome_piloto FROM pilotos;
+
 SELECT nome_gp, quantidade_voltas AS total_voltas
 FROM corridas;
-
 
 SELECT p.nome_piloto, pa.nome_pais
 FROM pilotos p
 JOIN paises pa ON p.cod_pais = pa.cod_pais;
 
-
 SELECT nome_piloto, salario FROM pilotos
 WHERE salario BETWEEN 70000 AND 100000;
-
 
 SELECT cod_pais, ROUND(AVG(salario),2) AS media_salarial
 FROM pilotos
 GROUP BY cod_pais;
 
-
 SELECT DISTINCT salario FROM pilotos
-
 ORDER BY salario ASC;
 
-SELECT * 
-FROM pilotos;
-
+SELECT * FROM pilotos;
